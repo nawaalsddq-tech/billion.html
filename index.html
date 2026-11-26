@@ -7,767 +7,422 @@
 <title>ONE IN A BILLI-ON</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
-
-* { box-sizing:border-box; }
-
-body {
-  margin:0;
-  min-height:100vh;
-  overflow-x:hidden;
-  color:white;
-  font-family:'VT323',monospace;
-  font-size:24px;
-  background:linear-gradient(#11113c,#30105e,#130d35);
-}
-
-body:before {
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  background-image:
-    radial-gradient(2px 2px at 10% 20%,white 99%,transparent),
-    radial-gradient(2px 2px at 30% 70%,white 99%,transparent),
-    radial-gradient(2px 2px at 55% 30%,white 99%,transparent),
-    radial-gradient(2px 2px at 80% 60%,white 99%,transparent),
-    radial-gradient(2px 2px at 95% 15%,white 99%,transparent);
-  background-size:220px 180px;
-  animation:stars 15s linear infinite;
-}
-
-@keyframes stars {
-  to { background-position:220px 180px; }
-}
-
-main {
-  width:min(950px,94%);
-  margin:auto;
-  padding:20px 0 35px;
-}
-
-header {
-  text-align:center;
-  margin-bottom:15px;
-}
-
-h1 {
-  font:clamp(17px,3vw,27px)/1.5 'Press Start 2P';
-  color:#fff36b;
-  text-shadow:4px 4px #ec45a2;
-}
-
-header p {
-  color:#8df5ff;
-  font-size:26px;
-}
-
-.hud {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:15px 0;
-}
-
-.hud span {
-  background:#21164e;
-  border:2px solid #9274ff;
-  padding:8px 12px;
-}
-
-.scene {
-  height:260px;
-  position:relative;
-  overflow:hidden;
-  border:4px solid white;
-  box-shadow:0 0 0 4px #ff70b7,0 0 25px #a75bff;
-  background:linear-gradient(#171044,#29105e);
-}
-
-.rainbow {
-  position:absolute;
-  top:115px;
-  left:0;
-  width:100%;
-  height:90px;
-  background:linear-gradient(
-    to bottom,
-    #ff4b5c 0 16.6%,
-    #ff9c40 16.6% 33.2%,
-    #ffe85a 33.2% 49.8%,
-    #53e66d 49.8% 66.4%,
-    #48c9ff 66.4% 83%,
-    #a66bff 83% 100%
-  );
-  animation:rainbow 2s linear infinite;
-}
-
-@keyframes rainbow {
-  to { background-position:180px 0; }
-}
-
-.character {
-  position:absolute;
-  left:4%;
-  top:65px;
-  width:115px;
-  height:115px;
-  z-index:3;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  transition:left .9s ease;
-}
-
-.character img {
-  display:none;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  image-rendering:pixelated;
-}
-
-.cat-placeholder {
-  font-size:80px;
-  filter:drop-shadow(4px 4px #170b38);
-}
-
-.cat-label {
-  position:absolute;
-  top:190px;
-  left:4%;
-  z-index:4;
-  white-space:nowrap;
-  transition:left .9s ease;
-  text-shadow:2px 2px #000;
-}
-
-.tier-list {
-  margin-top:18px;
-  padding:16px;
-  background:rgba(18,10,55,.95);
-  border:3px solid #ff83c4;
-  box-shadow:4px 4px #09051e;
-}
-
-.tier-list h2 {
-  margin:0 0 14px;
-  color:#fff36b;
-  font:12px/1.8 'Press Start 2P';
-  text-align:center;
-}
-
-.tier-grid {
-  display:grid;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  gap:8px;
-}
-
-.tier-card {
-  min-width:0;
-  padding:8px 3px;
-  text-align:center;
-  background:#21164e;
-  border:2px solid #59458d;
-  opacity:.65;
-  transition:.2s;
-}
-
-.tier-card.active {
-  opacity:1;
-  border:3px solid #fff36b;
-  background:#49328d;
-  box-shadow:0 0 12px #fff36b;
-}
-
-.tier-card img {
-  display:block;
-  width:100%;
-  height:65px;
-  object-fit:contain;
-  margin:0 auto 7px;
-}
-
-.tier-name {
-  display:block;
-  color:white;
-  font-size:17px;
-  line-height:1.1;
-  overflow-wrap:anywhere;
-}
-
-.question-box {
-  margin-top:22px;
-  padding:22px;
-  background:rgba(18,10,55,.95);
-  border:3px solid #62eaff;
-  box-shadow:5px 5px #09051e;
-}
-
-.category {
-  color:#ff83c4;
-  font:11px 'Press Start 2P';
-  line-height:1.8;
-  margin-bottom:15px;
-}
-
-#question {
-  font-size:34px;
-  line-height:1.2;
-  margin:0 0 12px;
-}
-
-.instructions {
-  color:#c6bee9;
-  font-size:21px;
-}
-
-.answer-row {
-  display:flex;
-  gap:10px;
-}
-
-input[type=text] {
-  flex:1;
-  min-width:0;
-  padding:13px;
-  border:3px solid #a88cff;
-  background:white;
-  color:#17102d;
-  font:25px 'VT323';
-  outline:none;
-}
-
-input[type=text]:focus {
-  border-color:#fff36b;
-}
-
-button {
-  border:3px solid white;
-  padding:13px 16px;
-  background:#ff70b7;
-  color:#230d42;
-  font:11px 'Press Start 2P';
-  cursor:pointer;
-  box-shadow:4px 4px #09051e;
-}
-
-button:hover { background:#fff36b; }
-
-button:disabled {
-  opacity:.5;
-  cursor:default;
-}
-
-#feedback {
-  min-height:35px;
-  margin-top:14px;
-  color:#fff36b;
-  font-size:25px;
-}
-
-.end {
-  display:none;
-  margin-top:20px;
-  padding:25px;
-  text-align:center;
-  border:3px solid #fff36b;
-  background:#21164e;
-}
-
-.end h2 {
-  color:#fff36b;
-  font:16px/1.8 'Press Start 2P';
-}
-
-@media(max-width:650px) {
-  .tier-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-}
-
-@media(max-width:600px) {
-  .scene { height:220px; }
-  .rainbow { top:95px; height:75px; }
-  .character { top:50px; width:90px; height:90px; }
-  .cat-label { top:155px; }
-  .answer-row { flex-direction:column; }
-  button { min-height:48px; }
-  #question { font-size:28px; }
-}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:white;font-family:'VT323',monospace;font-size:24px;background:radial-gradient(ellipse at 20% 25%,#49206d,transparent 35%),radial-gradient(ellipse at 80% 70%,#142e67,transparent 40%),linear-gradient(135deg,#080722,#211044 55%,#080722);overflow-x:hidden}
+.stars{position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 18%,white 98%,transparent),radial-gradient(2px 2px at 28% 72%,white 98%,transparent),radial-gradient(2px 2px at 48% 33%,white 98%,transparent),radial-gradient(2px 2px at 73% 14%,white 98%,transparent),radial-gradient(2px 2px at 91% 61%,white 98%,transparent),radial-gradient(1px 1px at 60% 84%,white 98%,transparent);background-size:260px 210px;animation:starsMove 28s linear infinite}
+@keyframes starsMove{to{background-position:260px 210px}}
+main{width:min(980px,94%);margin:auto;padding:18px 0 38px}
+header{text-align:center;margin-bottom:14px}
+h1{font:clamp(16px,3vw,27px)/1.5 'Press Start 2P';color:#fff36b;text-shadow:4px 4px #ec45a2}
+header p{color:#8df5ff;font-size:26px;margin:8px}
+.hud{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:15px 0}
+.hud span{background:#21164e;border:2px solid #9274ff;padding:8px 12px}
+.scene{height:330px;position:relative;overflow:hidden;border:4px solid white;box-shadow:0 0 0 4px #ff70b7,0 0 28px #a75bff;background:radial-gradient(circle at 82% 24%,#f5c9ff 0 2px,transparent 3px),radial-gradient(circle at 82% 24%,transparent 0 35px,#b66aff 36px 38px,transparent 40px),linear-gradient(145deg,#100a3b,#25105b 55%,#101b50)}
+.planet{position:absolute;border-radius:50%;opacity:.85;box-shadow:inset -12px -8px 0 #0005,0 0 20px #a76cff}
+.planet.one{width:48px;height:48px;right:12%;top:35px;background:linear-gradient(135deg,#ff9cbe,#8553d6)}
+.planet.two{width:25px;height:25px;left:58%;top:38px;background:linear-gradient(135deg,#65eaff,#5b58c8)}
+.planet.three{width:15px;height:15px;right:32%;bottom:32px;background:#ffe47b}
+.rainbow-trail{position:absolute;left:-10%;top:155px;width:120%;height:116px;z-index:1;background:linear-gradient(to bottom,#ff4b5c 0 16.6%,#ff9c40 16.6% 33.2%,#ffe85a 33.2% 49.8%,#53e66d 49.8% 66.4%,#48c9ff 66.4% 83%,#a66bff 83% 100%);filter:drop-shadow(0 0 8px #ff8bdb);animation:trailMove 2s linear infinite}
+@keyframes trailMove{to{background-position:180px 0;transform:translateX(3%)}}
+.character{position:absolute;left:4%;top:100px;width:130px;height:130px;z-index:3;display:flex;align-items:center;justify-content:center;transition:left .9s ease;animation:float 1.8s ease-in-out infinite}
+.character img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(4px 5px 3px #0009)}
+@keyframes float{50%{transform:translateY(-9px)}}
+.cat-label{position:absolute;top:275px;left:4%;z-index:4;white-space:nowrap;transition:left .9s ease;text-shadow:2px 2px #000;color:#fff36b}
+.tier-list{margin-top:18px;padding:16px;background:rgba(18,10,55,.94);border:3px solid #ff83c4;box-shadow:4px 4px #09051e}
+.tier-list h2{margin:0 0 14px;color:#fff36b;font:12px/1.8 'Press Start 2P';text-align:center}
+.tier-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.tier-card{min-width:0;padding:8px 3px;text-align:center;background:#21164e;border:2px solid #59458d;opacity:.65;transition:.2s}
+.tier-card.active{opacity:1;border:3px solid #fff36b;background:#49328d;box-shadow:0 0 12px #fff36b}
+.tier-card img{display:block;width:100%;height:65px;object-fit:contain;margin:0 auto 7px}
+.tier-name{display:block;color:white;font-size:17px;line-height:1.1;overflow-wrap:anywhere}
+.question-box{margin-top:22px;padding:22px;background:rgba(18,10,55,.95);border:3px solid #62eaff;box-shadow:5px 5px #09051e}
+.category{color:#ff83c4;font:11px 'Press Start 2P';line-height:1.8;margin-bottom:15px}
+#question{font-size:34px;line-height:1.2;margin:0 0 12px}
+.instructions{color:#c6bee9;font-size:21px}
+.answer-row{display:flex;gap:10px}
+input[type=text]{flex:1;min-width:0;padding:13px;border:3px solid #a88cff;background:white;color:#17102d;font:25px 'VT323';outline:none}
+input[type=text]:focus{border-color:#fff36b}
+button{border:3px solid white;padding:13px 16px;background:#ff70b7;color:#230d42;font:11px 'Press Start 2P';cursor:pointer;box-shadow:4px 4px #09051e}
+button:hover{background:#fff36b}
+button:disabled{opacity:.5;cursor:default}
+#feedback{min-height:35px;margin-top:14px;color:#fff36b;font-size:25px}
+.result{display:none;margin-top:18px;padding:18px;text-align:center;background:rgba(37,20,83,.97);border:3px solid #fff36b;box-shadow:0 0 22px #ff70b7}
+.result h2{font:clamp(12px,2vw,17px)/1.8 'Press Start 2P';color:#fff36b;margin:4px 0 12px}
+.result img{display:block;width:min(250px,70%);height:180px;object-fit:contain;margin:0 auto 10px;filter:drop-shadow(0 0 12px #fff36b)}
+.result p{font-size:27px;margin:5px}
+.end{display:none;margin-top:20px;padding:25px;text-align:center;border:3px solid #fff36b;background:#21164e}
+.end h2{color:#fff36b;font:16px/1.8 'Press Start 2P'}
+@media(max-width:650px){.tier-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.scene{height:280px}.rainbow-trail{top:130px;height:90px}.character{top:82px;width:100px;height:100px}.cat-label{top:235px}.answer-row{flex-direction:column}button{min-height:48px}#question{font-size:28px}}
 </style>
 </head>
-
 <body>
+<div class="stars"></div>
 <main>
-
 <header>
-  <h1>ONE IN A BILLI-ON</h1>
-  <p>BHARGAVI'S COSMIC TRIVIA RUN</p>
+<h1>ONE IN A BILLI-ON</h1>
+<p>BHARGAVI'S COSMIC TRIVIA RUN</p>
 </header>
 
 <div class="hud">
-  <span>ROUND <b id="round">1</b>/8</span>
-  <span>SCORE <b id="score">0</b></span>
-  <span>RANK <b id="rank">PLANKTON</b></span>
+<span>ROUND <b id="round">1</b>/8</span>
+<span>SCORE <b id="score">0</b></span>
+<span>RANK <b id="rank">PLANKTON</b></span>
 </div>
 
 <section class="scene">
-  <div class="rainbow"></div>
-  <div class="character" id="character">
-    <span class="cat-placeholder" id="placeholder">🐈</span>
-    <img id="catImage" alt="Bhargavi">
-  </div>
-  <div class="cat-label" id="catLabel">BHARGAVI</div>
+<div class="planet one"></div>
+<div class="planet two"></div>
+<div class="planet three"></div>
+<div class="rainbow-trail"></div>
+<div class="character" id="character">
+<img src="bhar.jpg" alt="Bhargavi">
+</div>
+<div class="cat-label" id="catLabel">BHARGAVI</div>
 </section>
 
 <section class="tier-list">
-  <h2>BHARGAVI'S RANKS</h2>
-  <div class="tier-grid">
-
-    <div class="tier-card active" data-tier="Plankton">
-      <img src="plankton.png" alt="Plankton cat">
-      <span class="tier-name">PLANKTON</span>
-    </div>
-
-    <div class="tier-card" data-tier="Too Clever">
-      <img src="too clever.jpeg" alt="Too Clever cat">
-      <span class="tier-name">TOO CLEVER</span>
-    </div>
-
-    <div class="tier-card" data-tier="Schooler">
-      <img src="schooler.jpg" alt="Schooler cat">
-      <span class="tier-name">SCHOOLER</span>
-    </div>
-
-    <div class="tier-card" data-tier="Rare">
-      <img src="rare.jpg" alt="Rare cat">
-      <span class="tier-name">RARE</span>
-    </div>
-
-    <div class="tier-card" data-tier="Deep Cut">
-      <img src="deep cut.webp" alt="Deep Cut cat">
-      <span class="tier-name">DEEP CUT</span>
-    </div>
-
-    <div class="tier-card" data-tier="One in a Billi-on">
-      <img src="billion.webp" alt="One in a Billi-on cat">
-      <span class="tier-name">ONE IN A BILLI-ON</span>
-    </div>
-
-  </div>
+<h2>BHARGAVI'S RANKS</h2>
+<div class="tier-grid">
+<div class="tier-card active" data-tier="Plankton"><img src="plankton.png" alt="Plankton"><span class="tier-name">PLANKTON</span></div>
+<div class="tier-card" data-tier="Too Clever"><img src="too clever.jpeg" alt="Too Clever"><span class="tier-name">TOO CLEVER</span></div>
+<div class="tier-card" data-tier="Schooler"><img src="schooler.jpg" alt="Schooler"><span class="tier-name">SCHOOLER</span></div>
+<div class="tier-card" data-tier="Rare"><img src="rare.jpg" alt="Rare"><span class="tier-name">RARE</span></div>
+<div class="tier-card" data-tier="Deep Cut"><img src="deep cut.webp" alt="Deep Cut"><span class="tier-name">DEEP CUT</span></div>
+<div class="tier-card" data-tier="One in a Billi-on"><img src="billion.webp" alt="One in a Billi-on"><span class="tier-name">ONE IN A BILLI-ON</span></div>
+</div>
 </section>
 
 <section class="question-box" id="game">
-  <div class="category" id="category">COSMIC TRIVIA</div>
-  <h2 id="question">Loading question...</h2>
-  <p class="instructions">
-    Type your answer. The rarer the accepted answer, the farther Bhargavi travels.
-  </p>
+<div class="category" id="category">COSMIC TRIVIA</div>
+<h2 id="question">Loading question...</h2>
+<p class="instructions">Type your answer. The rarer the accepted answer, the farther Bhargavi travels.</p>
+<form id="answerForm">
+<div class="answer-row">
+<input type="text" id="answer" placeholder="Type your answer here..." autocomplete="off" required>
+<button type="submit" id="submit">SUBMIT</button>
+</div>
+</form>
+<div id="feedback" aria-live="polite"></div>
+</section>
 
-  <form id="answerForm">
-    <div class="answer-row">
-      <input type="text" id="answer"
-        placeholder="Type your answer here..."
-        autocomplete="off" required>
-      <button type="submit" id="submit">SUBMIT</button>
-    </div>
-  </form>
-
-  <div id="feedback" aria-live="polite"></div>
+<section class="result" id="result" aria-live="polite">
+<h2 id="resultTitle">PLANKTON</h2>
+<img id="resultImage" src="plankton.png" alt="Your tier result">
+<p id="resultPoints">+10 POINTS</p>
+<p>BHARGAVI LEVELLED UP</p>
+<button id="nextButton">NEXT QUESTION</button>
 </section>
 
 <section class="end" id="end">
-  <h2 id="endTitle">COSMIC JOURNEY COMPLETE</h2>
-  <p id="endScore"></p>
-  <button id="restart">PLAY AGAIN</button>
+<h2 id="endTitle">COSMIC JOURNEY COMPLETE</h2>
+<p id="endScore"></p>
+<button id="restart">PLAY AGAIN</button>
 </section>
-
 </main>
 
 <script>
 const QUESTIONS = [
-
 {
- category:"MATHEMATICS",
- q:"Name a type of number.",
- answers:{
-  "integer":10,"whole number":10,"natural number":10,
-  "real number":10,"rational number":15,"prime number":15,
-  "even number":10,"odd number":10,"negative number":10,
-  "positive number":10,"irrational number":30,
-  "complex number":30,"imaginary number":30,
-  "decimal":10,"fraction":10,"perfect number":60,
-  "amicable number":60,"algebraic number":60,
-  "transcendental number":60,"Fibonacci number":30,
-  "triangular number":30,"Mersenne prime":85,
-  "Gaussian integer":85,"p-adic number":85,
-  "surreal number":85,"hyperreal number":85,
-  "quaternion":100,"octonion":100,"Leech number":100
- }
-},
-
+category:"MATHEMATICS",
+q:"Name a type of number.",
+answers:{
+"integer":10,"whole number":10,"natural number":10,"real number":10,
+"rational number":15,"prime number":15,"even number":10,"odd number":10,
+"negative number":10,"positive number":10,"irrational number":30,
+"complex number":30,"imaginary number":30,"decimal":10,"fraction":10,
+"perfect number":60,"amicable number":60,"algebraic number":60,
+"transcendental number":60,"Fibonacci number":30,"triangular number":30,
+"Mersenne prime":85,"Gaussian integer":85,"p-adic number":85,
+"surreal number":85,"hyperreal number":85,"quaternion":100,"octonion":100
+}},
 {
- category:"COMPUTER SCIENCE",
- q:"Name a programming language.",
- answers:{
-  "Python":10,"Java":10,"JavaScript":10,"C":10,
-  "C++":15,"C#":15,"Ruby":15,"PHP":15,
-  "Swift":15,"Kotlin":15,"Go":15,"Rust":30,
-  "R":15,"TypeScript":15,"SQL":15,"Perl":30,
-  "MATLAB":30,"Dart":30,"Lua":30,"Scala":30,
-  "Haskell":60,"Prolog":60,"Lisp":60,"Fortran":30,
-  "COBOL":30,"Assembly":30,"Erlang":85,
-  "OCaml":85,"F#":85,"Elixir":60,"Clojure":85,
-  "Smalltalk":85,"Ada":60,"Pascal":30,
-  "BASIC":15,"Julia":30,"Crystal":85,
-  "Zig":85,"Nim":85,"APL":100,"J":100,
-  "Malbolge":100,"Brainfuck":100
- }
-},
-
+category:"COMPUTER SCIENCE",
+q:"Name a programming language.",
+answers:{
+"Python":10,"Java":10,"JavaScript":10,"C":10,"C++":15,"C#":15,
+"Ruby":15,"PHP":15,"Swift":15,"Kotlin":15,"Go":15,"Rust":30,
+"R":15,"TypeScript":15,"SQL":15,"Perl":30,"MATLAB":30,"Dart":30,
+"Lua":30,"Scala":30,"Haskell":60,"Prolog":60,"Lisp":60,
+"Fortran":30,"COBOL":30,"Assembly":30,"Erlang":85,"OCaml":85,
+"F#":85,"Elixir":60,"Clojure":85,"Smalltalk":85,"Ada":60,
+"Pascal":30,"BASIC":15,"Julia":30,"Crystal":85,"Zig":85,
+"Nim":85,"APL":100,"J":100,"Malbolge":100,"Brainfuck":100,
+"INTERCAL":100,"Befunge":100,"Whitespace":100
+}},
 {
- category:"USA",
- q:"Name a US national park.",
- answers:{
-  "Yellowstone":10,"Yosemite":10,"Grand Canyon":10,
-  "Zion":15,"Acadia":15,"Glacier":15,
-  "Rocky Mountain":15,"Everglades":15,
-  "Joshua Tree":15,"Olympic":15,"Death Valley":15,
-  "Arches":15,"Bryce Canyon":30,"Canyonlands":30,
-  "Sequoia":15,"Kings Canyon":30,"Badlands":30,
-  "Great Basin":30,"Petrified Forest":30,
-  "Wind Cave":60,"Congaree":60,"Isle Royale":60,
-  "Pinnacles":60,"Voyageurs":60,"Theodore Roosevelt":30,
-  "Lassen Volcanic":30,"Guadalupe Mountains":60,
-  "North Cascades":60,"Dry Tortugas":85,
-  "Black Canyon of the Gunnison":85,
-  "Great Sand Dunes":60,"Carlsbad Caverns":30,
-  "Channel Islands":30,"Virgin Islands National Park":30,
-  "Gates of the Arctic":100,"Kobuk Valley":100,
-  "Lake Clark":85,"Wrangell St Elias":85
- }
-},
-
+category:"USA",
+q:"Name a US state capital.",
+answers:{
+"New York":10,"Albany":15,"Los Angeles":10,"Sacramento":10,
+"Boston":10,"Chicago":10,"Springfield":15,"Austin":10,
+"Denver":10,"Atlanta":10,"Phoenix":10,"Seattle":10,
+"Portland":10,"Nashville":15,"Raleigh":15,"Columbus":15,
+"Indianapolis":15,"Des Moines":15,"Madison":15,"Honolulu":15,
+"Anchorage":30,"Juneau":60,"Montpelier":100,"Pierre":85,
+"Dover":60,"Carson City":60,"Bismarck":60,"Helena":60,
+"Concord":30,"Augusta":30,"Frankfort":30,"Topeka":30,
+"Lincoln":15,"Lansing":15,"Trenton":15,"Harrisburg":15,
+"Providence":30,"Hartford":30,"Annapolis":30,"Charleston":30,
+"Richmond":15,"Tallahassee":15,"Jackson":15,"Baton Rouge":15,
+"Little Rock":15,"Oklahoma City":15,"Salt Lake City":15,
+"Cheyenne":30,"Santa Fe":30,"Boise":15,"Salem":15,
+"Montgomery":15,"Olympia":30,"St Paul":15,"Jefferson City":30,
+"Pierre":85,"Juneau":60,"Montpelier":100
+}},
 {
- category:"INDIA",
- q:"Name a city in India.",
- answers:{
-  "Mumbai":10,"Delhi":10,"New Delhi":10,
-  "Bangalore":10,"Bengaluru":10,"Chennai":10,
-  "Kolkata":10,"Hyderabad":10,"Pune":10,
-  "Ahmedabad":15,"Jaipur":15,"Lucknow":15,
-  "Chandigarh":15,"Bhopal":15,"Indore":15,
-  "Kochi":15,"Surat":15,"Nagpur":15,
-  "Varanasi":15,"Amritsar":15,"Agra":15,
-  "Mysore":30,"Mysuru":30,"Shillong":30,
-  "Guwahati":15,"Thiruvananthapuram":30,
-  "Kozhikode":30,"Mangalore":30,"Udaipur":30,
-  "Jodhpur":30,"Dehradun":30,"Patna":15,
-  "Ranchi":30,"Raipur":30,"Gangtok":60,
-  "Aizawl":60,"Itanagar":60,"Dibrugarh":60,
-  "Imphal":30,"Kohima":60,"Agartala":30,
-  "Tiruchirappalli":30,"Madurai":30,
-  "Vijayawada":30,"Visakhapatnam":15,
-  "Puducherry":30,"Nashik":15,"Aurangabad":30,
-  "Srinagar":15,"Leh":30,"Kavaratti":85,
-  "Ziro":85,"Tawang":85
- }
-},
-
+category:"INDIA",
+q:"Name a city in India.",
+answers:{
+"Mumbai":10,"Delhi":10,"New Delhi":10,"Bangalore":10,"Bengaluru":10,
+"Chennai":10,"Kolkata":10,"Hyderabad":10,"Pune":10,"Ahmedabad":15,
+"Jaipur":15,"Lucknow":15,"Chandigarh":15,"Bhopal":15,"Indore":15,
+"Kochi":15,"Surat":15,"Nagpur":15,"Varanasi":15,"Amritsar":15,
+"Agra":15,"Mysore":30,"Mysuru":30,"Shillong":30,"Guwahati":15,
+"Thiruvananthapuram":30,"Kozhikode":30,"Mangalore":30,"Udaipur":30,
+"Jodhpur":30,"Dehradun":30,"Patna":15,"Ranchi":30,"Raipur":30,
+"Gangtok":60,"Aizawl":60,"Itanagar":60,"Dibrugarh":60,"Imphal":30,
+"Kohima":60,"Agartala":30,"Tiruchirappalli":30,"Madurai":30,
+"Vijayawada":30,"Visakhapatnam":15,"Puducherry":30,"Nashik":15,
+"Aurangabad":30,"Srinagar":15,"Leh":30,"Kavaratti":100,
+"Ziro":85,"Tawang":85,"Daman":85,"Silvassa":85,"Jorhat":60,
+"Cherrapunji":60,"Majuli":100
+}},
 {
- category:"INDIAN FOOD",
- q:"Name an Indian food dish.",
- answers:{
-  "biryani":10,"butter chicken":10,"samosa":10,
-  "dosa":10,"idli":10,"naan":10,"roti":10,
-  "paneer tikka":15,"palak paneer":15,
-  "chole bhature":15,"rajma chawal":15,
-  "dal makhani":15,"pav bhaji":15,"vada pav":15,
-  "pani puri":15,"golgappa":15,"bhel puri":15,
-  "aloo paratha":15,"masala dosa":15,
-  "uttapam":15,"poha":15,"upma":15,
-  "khichdi":15,"malai kofta":30,"kadai paneer":30,
-  "shahi paneer":30,"rogan josh":30,
-  "dal baati churma":30,"litti chokha":30,
-  "dhokla":15,"thepla":30,"handvo":30,
-  "misal pav":30,"puran poli":30,"appam":30,
-  "puttu":30,"avial":30,"sambar":10,
-  "rasam":15,"bisi bele bath":30,
-  "pongal":15,"curd rice":15,"lemon rice":15,
-  "hyderabadi haleem":30,"nihari":30,
-  "seekh kebab":15,"tandoori chicken":10,
-  "fish curry":15,"amritsari kulcha":30,
-  "sarson da saag":30,"makki di roti":30,
-  "momos":15,"thukpa":30,"kathi roll":15,
-  "frankie":30,"kachori":15,"pakora":10,
-  "onion bhaji":15,"mirchi bajji":30,
-  "pakhala bhata":60,"ghugni":30,"luchi":30,
-  "aloo posto":30,"shukto":60,"macher jhol":30,
-  "rasgulla":10,"gulab jamun":10,"jalebi":10,
-  "kheer":10,"kulfi":15,"rasmalai":15,
-  "gajar ka halwa":15,"soan papdi":30,
-  "mysore pak":30,"modak":15,"sandesh":30,
-  "mishti doi":30,"peda":15,"balushahi":30,
-  "imarti":30,"malpua":30,"adhirasam":60,
-  "unniyappam":60,"bebinca":85,"chhena poda":60,
-  "shrikhand":30,"falooda":15,"lassi":10,
-  "chaas":15,"filter coffee":15,"masala chai":10,
-  "sattu paratha":30,"litti":30,"thekua":30,
-  "bafla":60,"gatte ki sabzi":30,
-  "ker sangri":60,"undhiyu":30,"sev tameta":30,
-  "khandvi":30,"patra":30,"thalipeeth":30,
-  "sabudana khichdi":15,"bharli vangi":60,
-  "ambur biryani":60,"thalassery biryani":60,
-  "chettinad chicken":30,"meen pollichathu":60,
-  "mutton sukka":30,"prawn koliwada":60,
-  "pathiri":60,"neer dosa":30,"ghavan":60,
-  "chicken 65":15,"egg curry":10,"fish fry":10
- }
-},
-
+category:"INDIAN FOOD",
+q:"Name an Indian food dish.",
+answers:{
+"biryani":10,"butter chicken":10,"samosa":10,"dosa":10,"idli":10,
+"naan":10,"roti":10,"paneer tikka":15,"palak paneer":15,
+"chole bhature":15,"rajma chawal":15,"dal makhani":15,"pav bhaji":15,
+"vada pav":15,"pani puri":15,"golgappa":15,"bhel puri":15,
+"aloo paratha":15,"masala dosa":15,"uttapam":15,"poha":15,"upma":15,
+"khichdi":15,"malai kofta":30,"kadai paneer":30,"shahi paneer":30,
+"rogan josh":30,"dal baati churma":30,"litti chokha":30,"dhokla":15,
+"thepla":30,"handvo":30,"misal pav":30,"puran poli":30,"appam":30,
+"puttu":30,"avial":30,"sambar":10,"rasam":15,"bisi bele bath":30,
+"pongal":15,"curd rice":15,"lemon rice":15,"hyderabadi haleem":30,
+"nihari":30,"seekh kebab":15,"tandoori chicken":10,"fish curry":15,
+"amritsari kulcha":30,"sarson da saag":30,"makki di roti":30,
+"momos":15,"thukpa":30,"kathi roll":15,"frankie":30,"kachori":15,
+"pakora":10,"onion bhaji":15,"mirchi bajji":30,"pakhala bhata":60,
+"ghugni":30,"luchi":30,"aloo posto":30,"shukto":60,"macher jhol":30,
+"rasgulla":10,"gulab jamun":10,"jalebi":10,"kheer":10,"kulfi":15,
+"rasmalai":15,"gajar ka halwa":15,"soan papdi":30,"mysore pak":30,
+"modak":15,"sandesh":30,"mishti doi":30,"peda":15,"balushahi":30,
+"malpua":30,"adhirasam":60,"unniyappam":60,"bebinca":85,
+"chhena poda":60,"shrikhand":30,"falooda":15,"lassi":10,"chaas":15,
+"filter coffee":15,"masala chai":10,"sattu paratha":30,"thekua":30,
+"bafla":60,"gatte ki sabzi":30,"ker sangri":60,"undhiyu":30,
+"sev tameta":30,"khandvi":30,"patra":30,"thalipeeth":30,
+"sabudana khichdi":15,"bharli vangi":60,"ambur biryani":60,
+"thalassery biryani":60,"chettinad chicken":30,"meen pollichathu":60,
+"mutton sukka":30,"prawn koliwada":60,"pathiri":60,"neer dosa":30,
+"ghavan":60,"chicken 65":15,"egg curry":10,"fish fry":10,
+"chak hao kheer":100,"bhangui":100,"khar":85,"pork with bamboo shoot":85,
+"galho":100,"smoked pork with axone":100
+}},
 {
- category:"GEOGRAPHY",
- q:"Name a country that shares a land border with India.",
- answers:{
-  "Pakistan":10,"China":10,"Nepal":10,
-  "Bangladesh":10,"Bhutan":15,"Myanmar":15,
-  "Afghanistan":60
- }
-},
-
+category:"TECH",
+q:"Name an American technology company.",
+answers:{
+"Apple":10,"Microsoft":10,"Google":10,"Amazon":10,"Meta":10,
+"Facebook":10,"Tesla":10,"Nvidia":10,"Intel":10,"IBM":10,
+"Oracle":15,"Adobe":15,"Netflix":15,"Cisco":15,"Qualcomm":15,
+"AMD":15,"Dell":15,"HP":15,"Uber":15,"Airbnb":15,
+"Salesforce":15,"PayPal":15,"Snap":15,"Pinterest":30,
+"Reddit":30,"Dropbox":30,"Zoom":15,"Spotify":30,
+"Palantir":30,"SpaceX":15,"OpenAI":15,"Anthropic":30,
+"Databricks":30,"Snowflake":30,"ServiceNow":30,
+"Cloudflare":30,"CrowdStrike":30,"Palo Alto Networks":30,
+"Fortinet":30,"Motorola":15,"Texas Instruments":30,
+"Micron":30,"Western Digital":30,"Seagate":30,
+"Broadcom":15,"Arm":30,"Supermicro":60,"Anduril":60,
+"Scale AI":60,"Figma":30,"Roblox":30,"Epic Games":30,
+"Valve":30,"Riot Games":30,"Bungie":60,"Duolingo":30,
+"Waymo":30,"Rivian":30,"Lucid Motors":60,"Bose":15,
+"Sonos":30,"Garmin":15,"GoPro":30,"iRobot":30,
+"Garmin":15,"Yelp":30,"Etsy":30,"Intuit":15,
+"Workday":30,"Atlassian":30,"GitLab":30,"MongoDB":30,
+"Okta":30,"Twilio":30,"Akamai":60,"Juniper Networks":60,
+"NetApp":60,"Pure Storage":60,"F5":60,"Box":30,
+"HubSpot":30,"Squarespace":30,"Roku":30,"Twitch":15,
+"Y Combinator":30,"Bloom Energy":60,"C3.ai":60,
+"Rigetti Computing":100,"IonQ":85,"Samsara":60,
+"Vercel":60,"Linear":60,"Airtable":30,"Glean":85
+}},
 {
- category:"HARRY POTTER",
- q:"Name a Harry Potter character other than Harry, Ron or Hermione.",
- answers:{
-  "Dumbledore":10,"Draco Malfoy":10,"Hagrid":10,
-  "Voldemort":10,"Snape":10,"Luna Lovegood":15,
-  "Neville Longbottom":15,"Sirius Black":15,
-  "Fred Weasley":15,"George Weasley":15,
-  "Ginny Weasley":15,"Dobby":15,"Bellatrix Lestrange":15,
-  "Minerva McGonagall":15,"Remus Lupin":15,
-  "Cedric Diggory":15,"Cho Chang":30,
-  "Nymphadora Tonks":30,"Kingsley Shacklebolt":30,
-  "Lucius Malfoy":15,"Molly Weasley":15,
-  "Arthur Weasley":15,"Percy Weasley":30,
-  "Bill Weasley":30,"Charlie Weasley":30,
-  "Fleur Delacour":30,"Viktor Krum":30,
-  "Rubeus Hagrid":10,"Gilderoy Lockhart":15,
-  "Dolores Umbridge":15,"Peter Pettigrew":30,
-  "Rita Skeeter":30,"Cornelius Fudge":30,
-  "Mad-Eye Moody":15,"Aberforth Dumbledore":60,
-  "Horace Slughorn":30,"Filius Flitwick":30,
-  "Pomona Sprout":30,"Sybill Trelawney":30,
-  "Lavender Brown":30,"Parvati Patil":30,
-  "Padma Patil":30,"Seamus Finnigan":15,
-  "Dean Thomas":15,"Oliver Wood":15,
-  "Lee Jordan":30,"Angelina Johnson":30,
-  "Katie Bell":30,"Alicia Spinnet":60,
-  "Mundungus Fletcher":60,"Grawp":60,
-  "Winky":85,"Peeves":60,"Nearly Headless Nick":30,
-  "Moaning Myrtle":15,"Barty Crouch":30,
-  "Barty Crouch Jr":30,"Olympe Maxime":60,
-  "Gregorovitch":85,"Narcissa Malfoy":15,
-  "Andromeda Tonks":85,"Regulus Black":60,
-  "Kreacher":30,"Firenze":60,"Aragog":30
- }
-},
-
+category:"HARRY POTTER",
+q:"Name a Harry Potter character other than Harry, Ron or Hermione.",
+answers:{
+"Dumbledore":10,"Draco Malfoy":10,"Hagrid":10,"Voldemort":10,
+"Snape":10,"Luna Lovegood":15,"Neville Longbottom":15,
+"Sirius Black":15,"Fred Weasley":15,"George Weasley":15,
+"Ginny Weasley":15,"Dobby":15,"Bellatrix Lestrange":15,
+"Minerva McGonagall":15,"Remus Lupin":15,"Cedric Diggory":15,
+"Cho Chang":30,"Nymphadora Tonks":30,"Kingsley Shacklebolt":30,
+"Lucius Malfoy":15,"Molly Weasley":15,"Arthur Weasley":15,
+"Percy Weasley":30,"Bill Weasley":30,"Charlie Weasley":30,
+"Fleur Delacour":30,"Viktor Krum":30,"Gilderoy Lockhart":15,
+"Dolores Umbridge":15,"Peter Pettigrew":30,"Rita Skeeter":30,
+"Cornelius Fudge":30,"Mad-Eye Moody":15,"Aberforth Dumbledore":60,
+"Horace Slughorn":30,"Filius Flitwick":30,"Pomona Sprout":30,
+"Sybill Trelawney":30,"Lavender Brown":30,"Parvati Patil":30,
+"Padma Patil":30,"Seamus Finnigan":15,"Dean Thomas":15,
+"Oliver Wood":15,"Lee Jordan":30,"Angelina Johnson":30,
+"Katie Bell":30,"Alicia Spinnet":60,"Mundungus Fletcher":60,
+"Grawp":60,"Winky":85,"Peeves":60,"Nearly Headless Nick":30,
+"Moaning Myrtle":15,"Barty Crouch":30,"Barty Crouch Jr":30,
+"Olympe Maxime":60,"Gregorovitch":85,"Narcissa Malfoy":15,
+"Andromeda Tonks":85,"Regulus Black":60,"Kreacher":30,
+"Firenze":60,"Aragog":30,"Hepzibah Smith":100,
+"Merope Gaunt":100,"Perenelle Flamel":100,
+"Arcturus Black":100,"Caradoc Dearborn":100
+}},
 {
- category:"INTERSTELLAR",
- q:"Name a planet or celestial object featured in Interstellar.",
- answers:{
-  "Earth":10,"Saturn":15,"Mars":30,
-  "Miller's planet":30,"Miller planet":30,
-  "Mann's planet":30,"Mann planet":30,
-  "Edmunds' planet":60,"Edmunds planet":60,
-  "Gargantua":85,"black hole":30,
-  "wormhole":30,"water planet":30,
-  "ice planet":30,"wormhole near Saturn":60,
-  "Miller's world":30,"Cooper Station":60,
-  "Endurance":30,"Ranger":60,"Lander":60
- }
-}
-
+category:"INTERSTELLAR",
+q:"Name a planet or celestial object featured in Interstellar.",
+answers:{
+"Earth":10,"Saturn":15,"Miller's planet":30,
+"Miller planet":30,"Mann's planet":30,"Mann planet":30,
+"Edmunds' planet":60,"Edmunds planet":60,"Gargantua":85,
+"black hole":30,"wormhole":30,"water planet":30,"ice planet":30,
+"Miller's world":30,"Gargantua black hole":85,
+"supermassive black hole":100
+}}
 ];
 
-/* Game state */
-
-let current = 0;
-let score = 0;
-let locked = false;
-let currentTier = "Plankton";
-
-const $ = id => document.getElementById(id);
-
-const TIERS = [
-  {points:10,name:"Plankton"},
-  {points:15,name:"Too Clever"},
-  {points:30,name:"Schooler"},
-  {points:60,name:"Rare"},
-  {points:85,name:"Deep Cut"},
-  {points:100,name:"One in a Billi-on"}
+const TIERS=[
+{points:10,name:"Plankton",image:"plankton.png"},
+{points:15,name:"Too Clever",image:"too clever.jpeg"},
+{points:30,name:"Schooler",image:"schooler.jpg"},
+{points:60,name:"Rare",image:"rare.jpg"},
+{points:85,name:"Deep Cut",image:"deep cut.webp"},
+{points:100,name:"One in a Billi-on",image:"billion.webp"}
 ];
 
-function normalise(text) {
- return text.toLowerCase()
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g,"")
-  .replace(/[’‘]/g,"'")
-  .replace(/[^a-z0-9+#' -]/g,"")
-  .replace(/\s+/g," ")
-  .trim();
+let current=0,score=0,locked=false,currentTier="Plankton";
+const $=id=>document.getElementById(id);
+
+function normalise(text){
+ return text.toLowerCase().normalize("NFD")
+ .replace(/[\u0300-\u036f]/g,"")
+ .replace(/[’‘]/g,"'")
+ .replace(/[^a-z0-9+#' -]/g,"")
+ .replace(/\s+/g," ").trim();
 }
 
-function checkAnswer(question, submitted) {
- const guess = normalise(submitted);
- if (!guess) return null;
-
- for (const [answer, points] of Object.entries(question.answers)) {
-  const accepted = normalise(answer);
-
-  if (guess === accepted) return points;
-
-  // Accept common plural and simple spelling variations.
-  if (
-   guess === accepted + "s" ||
-   guess === accepted + "es" ||
-   accepted === guess + "s"
-  ) return points;
+function checkAnswer(question,submitted){
+ const guess=normalise(submitted);
+ if(!guess)return null;
+ for(const [answer,points] of Object.entries(question.answers)){
+  const accepted=normalise(answer);
+  if(guess===accepted||guess===accepted+"s"||
+     guess===accepted+"es"||accepted===guess+"s"){
+   return points;
+  }
  }
-
  return null;
 }
 
-function getRank(points) {
- const tier = TIERS.find(t => t.points === points);
- return tier ? tier.name : "PLANKTON";
+function getTier(points){
+ return TIERS.find(t=>t.points===points)||TIERS[0];
 }
 
-function updateTierList(tier) {
- document.querySelectorAll(".tier-card").forEach(card => {
-  card.classList.toggle("active",card.dataset.tier === tier);
+function updateTierList(tier){
+ document.querySelectorAll(".tier-card").forEach(card=>{
+  card.classList.toggle("active",card.dataset.tier===tier);
  });
 }
 
-function moveBhargavi() {
- const maximum = QUESTIONS.length * 100;
- const progress = Math.min(94,4 + (score / maximum) * 88);
- $("character").style.left = progress + "%";
- $("catLabel").style.left = progress + "%";
+function moveBhargavi(){
+ const progress=Math.min(86,4+(score/(QUESTIONS.length*100))*82);
+ $("character").style.left=progress+"%";
+ $("catLabel").style.left=progress+"%";
 }
 
-function showQuestion() {
- locked = false;
- const item = QUESTIONS[current];
-
- $("round").textContent = current + 1;
- $("category").textContent = item.category;
- $("question").textContent = item.q;
- $("score").textContent = score;
- $("rank").textContent = currentTier.toUpperCase();
-
+function showQuestion(){
+ locked=false;
+ const item=QUESTIONS[current];
+ $("round").textContent=current+1;
+ $("category").textContent=item.category;
+ $("question").textContent=item.q;
+ $("score").textContent=score;
+ $("rank").textContent=currentTier.toUpperCase();
  updateTierList(currentTier);
-
- $("answer").value = "";
- $("answer").disabled = false;
- $("submit").disabled = false;
- $("submit").textContent = "SUBMIT";
- $("feedback").textContent = "";
-
+ $("answer").value="";
+ $("answer").disabled=false;
+ $("submit").disabled=false;
+ $("feedback").textContent="";
+ $("result").style.display="none";
+ $("game").style.display="block";
  $("answer").focus();
 }
 
-$("answerForm").addEventListener("submit",function(event) {
+$("answerForm").addEventListener("submit",event=>{
  event.preventDefault();
+ if(locked)return;
 
- if (locked) {
-  current++;
-  if (current >= QUESTIONS.length) finishGame();
-  else showQuestion();
-  return;
- }
+ const points=checkAnswer(QUESTIONS[current],$("answer").value);
 
- const submitted = $("answer").value;
- const points = checkAnswer(QUESTIONS[current],submitted);
-
- if (points === null) {
-  $("feedback").textContent =
-   "NOT IN THE ANSWER BANK YET. Try another answer!";
+ if(points===null){
+  $("feedback").textContent="NOT IN THE ANSWER BANK YET. TRY ANOTHER ANSWER!";
   $("answer").focus();
   return;
  }
 
- locked = true;
- score += points;
- currentTier = getRank(points);
+ locked=true;
+ score+=points;
+ const tier=getTier(points);
+ currentTier=tier.name;
 
- $("score").textContent = score;
- $("rank").textContent = currentTier.toUpperCase();
- $("feedback").textContent =
-  "CORRECT! " + currentTier.toUpperCase() +
-  "  +" + points + " POINTS! BHARGAVI MOVES!";
-
+ $("score").textContent=score;
+ $("rank").textContent=currentTier.toUpperCase();
  updateTierList(currentTier);
  moveBhargavi();
 
- $("answer").disabled = true;
- $("submit").textContent = "NEXT";
+ $("answer").disabled=true;
+ $("submit").disabled=true;
+ $("game").style.display="none";
+ $("result").style.display="block";
+
+ $("resultTitle").textContent=tier.name.toUpperCase();
+ $("resultImage").src=tier.image;
+ $("resultImage").alt=tier.name+" tier";
+ $("resultPoints").textContent="+"+points+" POINTS";
+ $("nextButton").textContent=
+  current===QUESTIONS.length-1?"SEE FINAL SCORE":"NEXT QUESTION";
 });
 
-function finishGame() {
- $("game").style.display = "none";
- $("end").style.display = "block";
-
- $("endTitle").textContent =
-  score >= QUESTIONS.length * 85
-   ? "ONE IN A BILLI-ON!"
-   : "COSMIC JOURNEY COMPLETE";
-
- $("endScore").textContent =
-  "BHARGAVI SCORED " + score + " POINTS.";
+function nextQuestion(){
+ current++;
+ if(current>=QUESTIONS.length){
+  finishGame();
+ }else{
+  showQuestion();
+ }
 }
 
-$("restart").addEventListener("click",function() {
- current = 0;
- score = 0;
- currentTier = "Plankton";
+$("nextButton").addEventListener("click",nextQuestion);
 
- $("end").style.display = "none";
- $("game").style.display = "block";
- $("character").style.left = "4%";
- $("catLabel").style.left = "4%";
+function finishGame(){
+ $("game").style.display="none";
+ $("result").style.display="none";
+ $("end").style.display="block";
+ $("endTitle").textContent=
+  score>=QUESTIONS.length*85?"ONE IN A BILLI-ON!":"COSMIC JOURNEY COMPLETE";
+ $("endScore").textContent="BHARGAVI SCORED "+score+" POINTS.";
+}
 
+$("restart").addEventListener("click",()=>{
+ current=0;
+ score=0;
+ currentTier="Plankton";
+ $("end").style.display="none";
+ $("character").style.left="4%";
+ $("catLabel").style.left="4%";
  showQuestion();
 });
-
-/* Upload a personal Bhargavi meme */
-
-$("memeUpload")?.addEventListener("change",function(event) {
- const file = event.target.files[0];
- if (!file) return;
-
- const reader = new FileReader();
- reader.onload = function() {
-  $("catImage").src = reader.result;
-  $("catImage").style.display = "block";
-  $("placeholder").style.display = "none";
-  try {
-   localStorage.setItem("bhargaviMeme",reader.result);
-  } catch(error) {}
- };
- reader.readAsDataURL(file);
-});
-
-try {
- const savedImage = localStorage.getItem("bhargaviMeme");
- if (savedImage) {
-  $("catImage").src = savedImage;
-  $("catImage").style.display = "block";
-  $("placeholder").style.display = "none";
- }
-} catch(error) {}
-
-/* Start immediately */
 
 showQuestion();
 </script>
