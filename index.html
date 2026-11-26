@@ -7,119 +7,543 @@
 <title>ONE IN A BILLI-ON</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:white;font-family:'VT323',monospace;font-size:24px;background:radial-gradient(ellipse at 20% 25%,#49206d,transparent 35%),radial-gradient(ellipse at 80% 70%,#142e67,transparent 40%),linear-gradient(135deg,#080722,#211044 55%,#080722);overflow-x:hidden}
-.stars{position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 18%,white 98%,transparent),radial-gradient(2px 2px at 28% 72%,white 98%,transparent),radial-gradient(2px 2px at 48% 33%,white 98%,transparent),radial-gradient(2px 2px at 73% 14%,white 98%,transparent),radial-gradient(2px 2px at 91% 61%,white 98%,transparent),radial-gradient(1px 1px at 60% 84%,white 98%,transparent);background-size:260px 210px;animation:starsMove 28s linear infinite}
-@keyframes starsMove{to{background-position:260px 210px}}
-main{width:min(980px,94%);margin:auto;padding:18px 0 38px}
-header{text-align:center;margin-bottom:14px}
-h1{font:clamp(16px,3vw,27px)/1.5 'Press Start 2P';color:#fff36b;text-shadow:4px 4px #ec45a2}
-header p{color:#8df5ff;font-size:26px;margin:8px}
-.hud{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:15px 0}
-.hud span{background:#21164e;border:2px solid #9274ff;padding:8px 12px}
-.scene{height:330px;position:relative;overflow:hidden;border:4px solid white;box-shadow:0 0 0 4px #ff70b7,0 0 28px #a75bff;background:radial-gradient(circle at 82% 24%,#f5c9ff 0 2px,transparent 3px),radial-gradient(circle at 82% 24%,transparent 0 35px,#b66aff 36px 38px,transparent 40px),linear-gradient(145deg,#100a3b,#25105b 55%,#101b50)}
-.planet{position:absolute;border-radius:50%;opacity:.85;box-shadow:inset -12px -8px 0 #0005,0 0 20px #a76cff}
-.planet.one{width:48px;height:48px;right:12%;top:35px;background:linear-gradient(135deg,#ff9cbe,#8553d6)}
-.planet.two{width:25px;height:25px;left:58%;top:38px;background:linear-gradient(135deg,#65eaff,#5b58c8)}
-.planet.three{width:15px;height:15px;right:32%;bottom:32px;background:#ffe47b}
-.rainbow-trail{position:absolute;left:-10%;top:155px;width:120%;height:116px;z-index:1;background:linear-gradient(to bottom,#ff4b5c 0 16.6%,#ff9c40 16.6% 33.2%,#ffe85a 33.2% 49.8%,#53e66d 49.8% 66.4%,#48c9ff 66.4% 83%,#a66bff 83% 100%);filter:drop-shadow(0 0 8px #ff8bdb);animation:trailMove 2s linear infinite}
-@keyframes trailMove{to{background-position:180px 0;transform:translateX(3%)}}
-.character{position:absolute;left:4%;top:100px;width:130px;height:130px;z-index:3;display:flex;align-items:center;justify-content:center;transition:left .9s ease;animation:float 1.8s ease-in-out infinite}
-.character img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(4px 5px 3px #0009)}
-@keyframes float{50%{transform:translateY(-9px)}}
-.cat-label{position:absolute;top:275px;left:4%;z-index:4;white-space:nowrap;transition:left .9s ease;text-shadow:2px 2px #000;color:#fff36b}
-.tier-list{margin-top:18px;padding:16px;background:rgba(18,10,55,.94);border:3px solid #ff83c4;box-shadow:4px 4px #09051e}
-.tier-list h2{margin:0 0 14px;color:#fff36b;font:12px/1.8 'Press Start 2P';text-align:center}
-.tier-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
-.tier-card{min-width:0;padding:8px 3px;text-align:center;background:#21164e;border:2px solid #59458d;opacity:.65;transition:.2s}
-.tier-card.active{opacity:1;border:3px solid #fff36b;background:#49328d;box-shadow:0 0 12px #fff36b}
-.tier-card img{display:block;width:100%;height:65px;object-fit:contain;margin:0 auto 7px}
-.tier-name{display:block;color:white;font-size:17px;line-height:1.1;overflow-wrap:anywhere}
-.question-box{margin-top:22px;padding:22px;background:rgba(18,10,55,.95);border:3px solid #62eaff;box-shadow:5px 5px #09051e}
-.category{color:#ff83c4;font:11px 'Press Start 2P';line-height:1.8;margin-bottom:15px}
-#question{font-size:34px;line-height:1.2;margin:0 0 12px}
-.instructions{color:#c6bee9;font-size:21px}
-.answer-row{display:flex;gap:10px}
-input[type=text]{flex:1;min-width:0;padding:13px;border:3px solid #a88cff;background:white;color:#17102d;font:25px 'VT323';outline:none}
+:root{--travel:0px}
+body{
+ margin:0;
+ min-height:100vh;
+ overflow:hidden;
+ color:white;
+ font-family:'VT323',monospace;
+ font-size:22px;
+ background:#09051f;
+}
+button,input{font-family:inherit}
+
+.game-world{
+ position:relative;
+ width:100%;
+ height:100vh;
+ height:100svh;
+ min-height:620px;
+ overflow:hidden;
+ isolation:isolate;
+ background:
+  radial-gradient(ellipse at 15% 20%,#54217b 0%,transparent 35%),
+  radial-gradient(ellipse at 85% 65%,#173d83 0%,transparent 42%),
+  radial-gradient(ellipse at 50% 100%,#34105d 0%,transparent 50%),
+  linear-gradient(135deg,#08051e,#170b42 50%,#080b2c);
+}
+.space{
+ position:absolute;
+ inset:-5%;
+ z-index:-3;
+ background-image:
+  radial-gradient(2px 2px at 10% 20%,white 98%,transparent),
+  radial-gradient(2px 2px at 30% 70%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 55% 30%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 80% 15%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 90% 80%,#fff 98%,transparent),
+  radial-gradient(1px 1px at 45% 90%,#fff 98%,transparent),
+  radial-gradient(2px 2px at 70% 55%,#fff 98%,transparent);
+ background-size:240px 190px;
+ animation:stars 18s linear infinite;
+}
+@keyframes stars{
+ from{background-position:0 0}
+ to{background-position:240px 190px}
+}
+.nebula{
+ position:absolute;
+ inset:0;
+ z-index:-2;
+ opacity:.35;
+ background:
+  radial-gradient(ellipse at 20% 60%,#a42c9d 0,transparent 30%),
+  radial-gradient(ellipse at 80% 20%,#2763b6 0,transparent 30%);
+ animation:nebula 12s ease-in-out infinite alternate;
+}
+@keyframes nebula{
+ to{transform:scale(1.15) translate(-2%,2%);opacity:.55}
+}
+
+/* Floating planets */
+.planet{
+ position:absolute;
+ border-radius:50%;
+ box-shadow:inset -12px -8px 0 #0005,0 0 24px #a76cff;
+ z-index:-1;
+}
+.planet.one{
+ width:75px;height:75px;right:13%;top:20%;
+ background:linear-gradient(135deg,#ff9cbe,#8553d6);
+}
+.planet.two{
+ width:34px;height:34px;left:18%;top:35%;
+ background:linear-gradient(135deg,#65eaff,#5b58c8);
+}
+.planet.three{
+ width:22px;height:22px;right:35%;top:58%;
+ background:linear-gradient(135deg,#ffe47b,#ff8b49);
+}
+.planet.four{
+ width:45px;height:45px;left:55%;top:15%;
+ background:linear-gradient(135deg,#8cf6d1,#2c87a9);
+}
+.planet.five{
+ width:18px;height:18px;left:8%;top:72%;
+ background:#ff8acb;
+}
+
+/* Background Nyan Cat */
+.nyan{
+ position:absolute;
+ z-index:0;
+ width:190px;
+ height:115px;
+ top:25%;
+ left:62%;
+ animation:nyanFly 15s linear infinite;
+ image-rendering:pixelated;
+ pointer-events:none;
+ opacity:.9;
+}
+@keyframes nyanFly{
+ 0%{transform:translate(110vw,0) scale(.8)}
+ 45%{transform:translate(-20vw,-35px) scale(1)}
+ 50%{transform:translate(-25vw,-35px) scale(1)}
+ 100%{transform:translate(-150vw,25px) scale(.8)}
+}
+.nyan-tail{
+ position:absolute;
+ left:-115px;
+ top:42px;
+ width:125px;
+ height:48px;
+ background:linear-gradient(to bottom,
+  #ff425e 0 16.66%,
+  #ff9d38 16.66% 33.33%,
+  #ffe65a 33.33% 50%,
+  #50e56b 50% 66.66%,
+  #43c9ff 66.66% 83.33%,
+  #a76aff 83.33% 100%);
+ box-shadow:0 0 15px #ff8bdb;
+}
+.nyan-body{
+ position:absolute;
+ width:95px;height:66px;
+ left:42px;top:24px;
+ background:#ffb4ce;
+ border:5px solid #b96b8e;
+ box-shadow:inset 0 10px #ffe0eb;
+}
+.nyan-body:before{
+ content:"";
+ position:absolute;
+ left:10px;top:12px;
+ width:12px;height:12px;
+ background:#fff;
+ box-shadow:22px 0 #fff,44px 0 #fff,0 20px #fff,22px 20px #fff,44px 20px #fff;
+}
+.nyan-head{
+ position:absolute;
+ width:60px;height:60px;
+ left:112px;top:27px;
+ background:#aaa;
+ border:5px solid #777;
+ border-radius:12px;
+}
+.nyan-head:before,.nyan-head:after{
+ content:"";
+ position:absolute;
+ top:-15px;
+ width:19px;height:20px;
+ background:#aaa;
+ border-top:5px solid #777;
+}
+.nyan-head:before{left:0;transform:skewY(25deg)}
+.nyan-head:after{right:0;transform:skewY(-25deg)}
+.nyan-face{
+ position:absolute;
+ top:23px;left:12px;
+ width:7px;height:7px;
+ background:#222;
+ box-shadow:22px 0 #222,10px 12px #f58cae;
+}
+.nyan-feet{
+ position:absolute;
+ left:50px;top:84px;
+ width:15px;height:16px;
+ background:#aaa;
+ box-shadow:35px 0 #aaa,75px 0 #aaa;
+}
+.nyan-sparkle{
+ position:absolute;
+ color:#fff36b;
+ font-size:25px;
+ animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{to{opacity:.25;transform:scale(.7)}}
+
+/* Header and score display */
+.top-ui{
+ position:absolute;
+ top:16px;
+ left:0;right:0;
+ z-index:5;
+ padding:0 18px;
+ text-align:center;
+ pointer-events:none;
+}
+h1{
+ margin:0;
+ font:clamp(15px,2.7vw,25px)/1.5 'Press Start 2P';
+ color:#fff36b;
+ text-shadow:4px 4px #ec45a2;
+}
+.subtitle{
+ margin:7px 0 12px;
+ color:#8df5ff;
+ font-size:24px;
+}
+.hud{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ flex-wrap:wrap;
+}
+.hud span{
+ background:#21164eeb;
+ border:2px solid #9274ff;
+ padding:7px 12px;
+ font-size:21px;
+ box-shadow:3px 3px #09051e;
+}
+
+/* Bhargavi's movement */
+.character{
+ position:absolute;
+ z-index:3;
+ left:4%;
+ top:43%;
+ width:clamp(85px,12vw,135px);
+ height:clamp(85px,12vw,135px);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ transform:translateX(-50%);
+ transition:left 1.1s cubic-bezier(.2,.8,.2,1);
+ animation:bob 1.8s ease-in-out infinite;
+}
+.character img{
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ filter:drop-shadow(4px 5px 5px #0009);
+}
+@keyframes bob{
+ 50%{translate:0 -12px}
+}
+.cat-label{
+ position:absolute;
+ top:calc(43% + clamp(90px,12vw,140px));
+ left:4%;
+ z-index:4;
+ transform:translateX(-50%);
+ color:#fff36b;
+ white-space:nowrap;
+ text-shadow:2px 2px #000;
+ transition:left 1.1s cubic-bezier(.2,.8,.2,1);
+ font-size:22px;
+}
+
+/* Compact rank bar */
+.tier-list{
+ position:absolute;
+ z-index:5;
+ top:125px;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(680px,94%);
+ padding:9px 12px;
+ background:#160d3bd9;
+ border:2px solid #ff83c4;
+ box-shadow:4px 4px #09051e;
+}
+.tier-list h2{
+ margin:0 0 7px;
+ color:#fff36b;
+ font:9px/1.5 'Press Start 2P';
+ text-align:center;
+}
+.tier-grid{
+ display:grid;
+ grid-template-columns:repeat(6,minmax(0,1fr));
+ gap:6px;
+}
+.tier-card{
+ min-width:0;
+ padding:4px 2px;
+ text-align:center;
+ background:#21164e;
+ border:2px solid #59458d;
+ opacity:.58;
+ transition:.2s;
+}
+.tier-card.active{
+ opacity:1;
+ border:2px solid #fff36b;
+ background:#49328d;
+ box-shadow:0 0 12px #fff36b;
+}
+.tier-card img{
+ display:block;
+ width:100%;
+ height:37px;
+ object-fit:contain;
+ margin:0 auto 3px;
+}
+.tier-name{
+ display:block;
+ color:white;
+ font-size:13px;
+ line-height:1.05;
+ overflow-wrap:anywhere;
+}
+
+/* Floating trivia panel */
+.game-panel{
+ position:absolute;
+ z-index:6;
+ left:50%;
+ bottom:18px;
+ transform:translateX(-50%);
+ width:min(760px,94%);
+}
+.question-box,.result,.end{
+ padding:17px 20px;
+ text-align:center;
+ background:rgba(18,10,55,.94);
+ border:3px solid #62eaff;
+ box-shadow:5px 5px #09051e,0 0 25px #7d50ff;
+ backdrop-filter:blur(7px);
+}
+.category{
+ color:#ff83c4;
+ font:10px/1.8 'Press Start 2P';
+ margin-bottom:9px;
+}
+#question{
+ font-size:clamp(25px,3.5vw,34px);
+ line-height:1.15;
+ margin:0 0 5px;
+}
+.instructions{
+ color:#c6bee9;
+ font-size:19px;
+ margin:5px 0 12px;
+}
+.answer-row{
+ display:flex;
+ gap:9px;
+}
+input[type=text]{
+ flex:1;
+ min-width:0;
+ padding:10px 12px;
+ border:3px solid #a88cff;
+ background:white;
+ color:#17102d;
+ font:23px 'VT323';
+ outline:none;
+}
 input[type=text]:focus{border-color:#fff36b}
-button{border:3px solid white;padding:13px 16px;background:#ff70b7;color:#230d42;font:11px 'Press Start 2P';cursor:pointer;box-shadow:4px 4px #09051e}
+button{
+ border:3px solid white;
+ padding:11px 14px;
+ background:#ff70b7;
+ color:#230d42;
+ font:9px 'Press Start 2P';
+ cursor:pointer;
+ box-shadow:4px 4px #09051e;
+}
 button:hover{background:#fff36b}
 button:disabled{opacity:.5;cursor:default}
-#feedback{min-height:35px;margin-top:14px;color:#fff36b;font-size:25px}
-.result{display:none;margin-top:18px;padding:18px;text-align:center;background:rgba(37,20,83,.97);border:3px solid #fff36b;box-shadow:0 0 22px #ff70b7}
-.result h2{font:clamp(12px,2vw,17px)/1.8 'Press Start 2P';color:#fff36b;margin:4px 0 12px}
-.result img{display:block;width:min(250px,70%);height:180px;object-fit:contain;margin:0 auto 10px;filter:drop-shadow(0 0 12px #fff36b)}
-.result p{font-size:27px;margin:5px}
-.end{display:none;margin-top:20px;padding:25px;text-align:center;border:3px solid #fff36b;background:#21164e}
-.end h2{color:#fff36b;font:16px/1.8 'Press Start 2P'}
-@media(max-width:650px){.tier-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:600px){.scene{height:280px}.rainbow-trail{top:130px;height:90px}.character{top:82px;width:100px;height:100px}.cat-label{top:235px}.answer-row{flex-direction:column}button{min-height:48px}#question{font-size:28px}}
+#feedback{
+ min-height:23px;
+ margin-top:9px;
+ color:#fff36b;
+ font-size:21px;
+}
+.result,.end{display:none}
+.result h2,.end h2{
+ font:clamp(11px,1.8vw,16px)/1.8 'Press Start 2P';
+ color:#fff36b;
+ margin:0 0 8px;
+}
+.result img{
+ display:block;
+ width:min(170px,55%);
+ height:105px;
+ object-fit:contain;
+ margin:0 auto 5px;
+ filter:drop-shadow(0 0 12px #fff36b);
+}
+.result p,.end p{font-size:23px;margin:5px}
+.result button,.end button{margin-top:8px}
+
+/* Small flying stars */
+.sparkle{
+ position:absolute;
+ z-index:-1;
+ color:#fff36b;
+ font-size:25px;
+ animation:twinkle 2s infinite alternate;
+}
+.s1{top:43%;left:30%}
+.s2{top:30%;right:25%;animation-delay:.6s}
+.s3{top:65%;left:75%;animation-delay:1s}
+.s4{top:18%;left:8%;animation-delay:.3s}
+.s5{top:70%;left:45%;animation-delay:1.3s}
+
+/* Movement feedback */
+.game-world.traveling .space{animation-duration:5s}
+.game-world.traveling .planet{animation:planetDrift 3s ease-in-out infinite alternate}
+@keyframes planetDrift{
+ to{translate:-35px 12px}
+}
+
+@media(max-width:650px){
+ .game-world{min-height:600px}
+ .top-ui{top:10px;padding:0 8px}
+ .subtitle{margin:4px 0 8px;font-size:19px}
+ .hud{gap:5px}
+ .hud span{padding:5px 7px;font-size:17px}
+ .tier-list{top:105px;width:96%;padding:7px 5px}
+ .tier-grid{gap:3px}
+ .tier-card{padding:3px 1px}
+ .tier-card img{height:30px}
+ .tier-name{font-size:11px}
+ .character{top:39%;width:95px;height:95px}
+ .cat-label{top:calc(39% + 98px);font-size:18px}
+ .nyan{top:29%;transform:scale(.7)}
+ .game-panel{bottom:10px;width:96%}
+ .question-box,.result,.end{padding:13px 12px}
+ .instructions{font-size:17px;margin:4px 0 9px}
+ .answer-row{gap:6px}
+ input[type=text]{font-size:21px;padding:9px}
+ button{padding:10px 9px;font-size:8px}
+}
+@media(max-height:720px) and (min-width:651px){
+ .tier-list{top:105px}
+ .character{top:39%;width:100px;height:100px}
+ .cat-label{top:calc(39% + 105px)}
+ .game-panel{bottom:10px}
+ .question-box,.result,.end{padding:11px 16px}
+ .result img{height:75px}
+}
 </style>
 </head>
+
 <body>
-<div class="stars"></div>
-<main>
-<header>
-<h1>ONE IN A BILLI-ON</h1>
-<p>BHARGAVI'S COSMIC TRIVIA RUN</p>
-</header>
+<div class="game-world" id="world">
+ <div class="space"></div>
+ <div class="nebula"></div>
 
-<div class="hud">
-<span>ROUND <b id="round">1</b>/8</span>
-<span>SCORE <b id="score">0</b></span>
-<span>RANK <b id="rank">PLANKTON</b></span>
+ <div class="planet one"></div>
+ <div class="planet two"></div>
+ <div class="planet three"></div>
+ <div class="planet four"></div>
+ <div class="planet five"></div>
+
+ <div class="sparkle s1">✦</div>
+ <div class="sparkle s2">✧</div>
+ <div class="sparkle s3">✦</div>
+ <div class="sparkle s4">✧</div>
+ <div class="sparkle s5">✦</div>
+
+ <div class="nyan" aria-hidden="true">
+  <div class="nyan-tail"></div>
+  <div class="nyan-body"></div>
+  <div class="nyan-head"><div class="nyan-face"></div></div>
+  <div class="nyan-feet"></div>
+ </div>
+
+ <header class="top-ui">
+  <h1>ONE IN A BILLI-ON</h1>
+  <p class="subtitle">BHARGAVI'S COSMIC TRIVIA RUN</p>
+  <div class="hud">
+   <span>ROUND <b id="round">1</b>/8</span>
+   <span>SCORE <b id="score">0</b></span>
+   <span>RANK <b id="rank">PLANKTON</b></span>
+  </div>
+ </header>
+
+ <div class="character" id="character">
+  <img src="bhar.jpg" alt="Bhargavi">
+ </div>
+ <div class="cat-label" id="catLabel">BHARGAVI</div>
+
+ <section class="tier-list">
+  <h2>BHARGAVI'S RANKS</h2>
+  <div class="tier-grid">
+   <div class="tier-card active" data-tier="Plankton">
+    <img src="plankton.png" alt="Plankton">
+    <span class="tier-name">PLANKTON</span>
+   </div>
+   <div class="tier-card" data-tier="Too Clever">
+    <img src="too clever.jpeg" alt="Too Clever">
+    <span class="tier-name">TOO CLEVER</span>
+   </div>
+   <div class="tier-card" data-tier="Schooler">
+    <img src="schooler.jpg" alt="Schooler">
+    <span class="tier-name">SCHOOLER</span>
+   </div>
+   <div class="tier-card" data-tier="Rare">
+    <img src="rare.jpg" alt="Rare">
+    <span class="tier-name">RARE</span>
+   </div>
+   <div class="tier-card" data-tier="Deep Cut">
+    <img src="deep cut.webp" alt="Deep Cut">
+    <span class="tier-name">DEEP CUT</span>
+   </div>
+   <div class="tier-card" data-tier="One in a Billi-on">
+    <img src="billion.webp" alt="One in a Billi-on">
+    <span class="tier-name">ONE IN A BILLI-ON</span>
+   </div>
+  </div>
+ </section>
+
+ <div class="game-panel">
+  <section class="question-box" id="game">
+   <div class="category" id="category">COSMIC TRIVIA</div>
+   <h2 id="question">Loading question...</h2>
+   <p class="instructions">Type your answer. Rarer answers send Bhargavi farther through space.</p>
+   <form id="answerForm">
+    <div class="answer-row">
+     <input type="text" id="answer" placeholder="Type your answer here..." autocomplete="off" required>
+     <button type="submit" id="submit">SUBMIT</button>
+    </div>
+   </form>
+   <div id="feedback" aria-live="polite"></div>
+  </section>
+
+  <section class="result" id="result" aria-live="polite">
+   <h2 id="resultTitle">PLANKTON</h2>
+   <img id="resultImage" src="plankton.png" alt="Your tier result">
+   <p id="resultPoints">+10 POINTS</p>
+   <p>BHARGAVI LEVELLED UP</p>
+   <button id="nextButton">NEXT QUESTION</button>
+  </section>
+
+  <section class="end" id="end">
+   <h2 id="endTitle">COSMIC JOURNEY COMPLETE</h2>
+   <p id="endScore"></p>
+   <button id="restart">PLAY AGAIN</button>
+  </section>
+ </div>
 </div>
-
-<section class="scene">
-<div class="planet one"></div>
-<div class="planet two"></div>
-<div class="planet three"></div>
-<div class="rainbow-trail"></div>
-<div class="character" id="character">
-<img src="bhar.jpg" alt="Bhargavi">
-</div>
-<div class="cat-label" id="catLabel">BHARGAVI</div>
-</section>
-
-<section class="tier-list">
-<h2>BHARGAVI'S RANKS</h2>
-<div class="tier-grid">
-<div class="tier-card active" data-tier="Plankton"><img src="plankton.png" alt="Plankton"><span class="tier-name">PLANKTON</span></div>
-<div class="tier-card" data-tier="Too Clever"><img src="too clever.jpeg" alt="Too Clever"><span class="tier-name">TOO CLEVER</span></div>
-<div class="tier-card" data-tier="Schooler"><img src="schooler.jpg" alt="Schooler"><span class="tier-name">SCHOOLER</span></div>
-<div class="tier-card" data-tier="Rare"><img src="rare.jpg" alt="Rare"><span class="tier-name">RARE</span></div>
-<div class="tier-card" data-tier="Deep Cut"><img src="deep cut.webp" alt="Deep Cut"><span class="tier-name">DEEP CUT</span></div>
-<div class="tier-card" data-tier="One in a Billi-on"><img src="billion.webp" alt="One in a Billi-on"><span class="tier-name">ONE IN A BILLI-ON</span></div>
-</div>
-</section>
-
-<section class="question-box" id="game">
-<div class="category" id="category">COSMIC TRIVIA</div>
-<h2 id="question">Loading question...</h2>
-<p class="instructions">Type your answer. The rarer the accepted answer, the farther Bhargavi travels.</p>
-<form id="answerForm">
-<div class="answer-row">
-<input type="text" id="answer" placeholder="Type your answer here..." autocomplete="off" required>
-<button type="submit" id="submit">SUBMIT</button>
-</div>
-</form>
-<div id="feedback" aria-live="polite"></div>
-</section>
-
-<section class="result" id="result" aria-live="polite">
-<h2 id="resultTitle">PLANKTON</h2>
-<img id="resultImage" src="plankton.png" alt="Your tier result">
-<p id="resultPoints">+10 POINTS</p>
-<p>BHARGAVI LEVELLED UP</p>
-<button id="nextButton">NEXT QUESTION</button>
-</section>
-
-<section class="end" id="end">
-<h2 id="endTitle">COSMIC JOURNEY COMPLETE</h2>
-<p id="endScore"></p>
-<button id="restart">PLAY AGAIN</button>
-</section>
-</main>
 
 <script>
 const QUESTIONS = [
@@ -154,21 +578,19 @@ answers:{
 category:"USA",
 q:"Name a US state capital.",
 answers:{
-"New York":10,"Albany":15,"Los Angeles":10,"Sacramento":10,
-"Boston":10,"Chicago":10,"Springfield":15,"Austin":10,
-"Denver":10,"Atlanta":10,"Phoenix":10,"Seattle":10,
-"Portland":10,"Nashville":15,"Raleigh":15,"Columbus":15,
-"Indianapolis":15,"Des Moines":15,"Madison":15,"Honolulu":15,
-"Anchorage":30,"Juneau":60,"Montpelier":100,"Pierre":85,
-"Dover":60,"Carson City":60,"Bismarck":60,"Helena":60,
-"Concord":30,"Augusta":30,"Frankfort":30,"Topeka":30,
-"Lincoln":15,"Lansing":15,"Trenton":15,"Harrisburg":15,
-"Providence":30,"Hartford":30,"Annapolis":30,"Charleston":30,
-"Richmond":15,"Tallahassee":15,"Jackson":15,"Baton Rouge":15,
-"Little Rock":15,"Oklahoma City":15,"Salt Lake City":15,
-"Cheyenne":30,"Santa Fe":30,"Boise":15,"Salem":15,
-"Montgomery":15,"Olympia":30,"St Paul":15,"Jefferson City":30,
-"Pierre":85,"Juneau":60,"Montpelier":100
+"Albany":15,"Sacramento":10,"Boston":10,"Springfield":15,
+"Austin":10,"Denver":10,"Atlanta":10,"Phoenix":10,
+"Nashville":15,"Raleigh":15,"Columbus":15,"Indianapolis":15,
+"Des Moines":15,"Madison":15,"Honolulu":15,"Anchorage":30,
+"Juneau":60,"Montpelier":100,"Pierre":85,"Dover":60,
+"Carson City":60,"Bismarck":60,"Helena":60,"Concord":30,
+"Augusta":30,"Frankfort":30,"Topeka":30,"Lincoln":15,
+"Lansing":15,"Trenton":15,"Harrisburg":15,"Providence":30,
+"Hartford":30,"Annapolis":30,"Charleston":30,"Richmond":15,
+"Tallahassee":15,"Jackson":15,"Baton Rouge":15,"Little Rock":15,
+"Oklahoma City":15,"Salt Lake City":15,"Cheyenne":30,
+"Santa Fe":30,"Boise":15,"Salem":15,"Montgomery":15,
+"Olympia":30,"St Paul":15,"Jefferson City":30
 }},
 {
 category:"INDIA",
@@ -186,7 +608,7 @@ answers:{
 "Vijayawada":30,"Visakhapatnam":15,"Puducherry":30,"Nashik":15,
 "Aurangabad":30,"Srinagar":15,"Leh":30,"Kavaratti":100,
 "Ziro":85,"Tawang":85,"Daman":85,"Silvassa":85,"Jorhat":60,
-"Cherrapunji":60,"Majuli":100
+"Cherrapunji":60
 }},
 {
 category:"INDIAN FOOD",
@@ -231,25 +653,24 @@ answers:{
 "Oracle":15,"Adobe":15,"Netflix":15,"Cisco":15,"Qualcomm":15,
 "AMD":15,"Dell":15,"HP":15,"Uber":15,"Airbnb":15,
 "Salesforce":15,"PayPal":15,"Snap":15,"Pinterest":30,
-"Reddit":30,"Dropbox":30,"Zoom":15,"Spotify":30,
-"Palantir":30,"SpaceX":15,"OpenAI":15,"Anthropic":30,
-"Databricks":30,"Snowflake":30,"ServiceNow":30,
-"Cloudflare":30,"CrowdStrike":30,"Palo Alto Networks":30,
-"Fortinet":30,"Motorola":15,"Texas Instruments":30,
-"Micron":30,"Western Digital":30,"Seagate":30,
-"Broadcom":15,"Arm":30,"Supermicro":60,"Anduril":60,
+"Reddit":30,"Dropbox":30,"Zoom":15,"Palantir":30,
+"SpaceX":15,"OpenAI":15,"Anthropic":30,"Databricks":30,
+"Snowflake":30,"ServiceNow":30,"Cloudflare":30,"CrowdStrike":30,
+"Palo Alto Networks":30,"Fortinet":30,"Motorola":15,
+"Texas Instruments":30,"Micron":30,"Western Digital":30,
+"Seagate":30,"Broadcom":15,"Supermicro":60,"Anduril":60,
 "Scale AI":60,"Figma":30,"Roblox":30,"Epic Games":30,
 "Valve":30,"Riot Games":30,"Bungie":60,"Duolingo":30,
 "Waymo":30,"Rivian":30,"Lucid Motors":60,"Bose":15,
 "Sonos":30,"Garmin":15,"GoPro":30,"iRobot":30,
-"Garmin":15,"Yelp":30,"Etsy":30,"Intuit":15,
-"Workday":30,"Atlassian":30,"GitLab":30,"MongoDB":30,
-"Okta":30,"Twilio":30,"Akamai":60,"Juniper Networks":60,
-"NetApp":60,"Pure Storage":60,"F5":60,"Box":30,
-"HubSpot":30,"Squarespace":30,"Roku":30,"Twitch":15,
-"Y Combinator":30,"Bloom Energy":60,"C3.ai":60,
-"Rigetti Computing":100,"IonQ":85,"Samsara":60,
-"Vercel":60,"Linear":60,"Airtable":30,"Glean":85
+"Yelp":30,"Etsy":30,"Intuit":15,"Workday":30,
+"GitLab":30,"MongoDB":30,"Okta":30,"Twilio":30,
+"Akamai":60,"Juniper Networks":60,"NetApp":60,
+"Pure Storage":60,"F5":60,"Box":30,"HubSpot":30,
+"Squarespace":30,"Roku":30,"Twitch":15,
+"Bloom Energy":60,"C3.ai":60,"Rigetti Computing":100,
+"IonQ":85,"Samsara":60,"Vercel":60,"Linear":60,
+"Airtable":30,"Glean":85
 }},
 {
 category:"HARRY POTTER",
@@ -293,12 +714,12 @@ answers:{
 ];
 
 const TIERS=[
-{points:10,name:"Plankton",image:"plankton.png"},
-{points:15,name:"Too Clever",image:"too clever.jpeg"},
-{points:30,name:"Schooler",image:"schooler.jpg"},
-{points:60,name:"Rare",image:"rare.jpg"},
-{points:85,name:"Deep Cut",image:"deep cut.webp"},
-{points:100,name:"One in a Billi-on",image:"billion.webp"}
+ {points:10,name:"Plankton",image:"plankton.png"},
+ {points:15,name:"Too Clever",image:"too clever.jpeg"},
+ {points:30,name:"Schooler",image:"schooler.jpg"},
+ {points:60,name:"Rare",image:"rare.jpg"},
+ {points:85,name:"Deep Cut",image:"deep cut.webp"},
+ {points:100,name:"One in a Billi-on",image:"billion.webp"}
 ];
 
 let current=0,score=0,locked=false,currentTier="Plankton";
@@ -336,9 +757,11 @@ function updateTierList(tier){
 }
 
 function moveBhargavi(){
- const progress=Math.min(86,4+(score/(QUESTIONS.length*100))*82);
+ const progress=Math.min(87,4+(score/(QUESTIONS.length*100))*83);
  $("character").style.left=progress+"%";
  $("catLabel").style.left=progress+"%";
+ $("world").classList.add("traveling");
+ setTimeout(()=>$("world").classList.remove("traveling"),1200);
 }
 
 function showQuestion(){
@@ -355,6 +778,7 @@ function showQuestion(){
  $("submit").disabled=false;
  $("feedback").textContent="";
  $("result").style.display="none";
+ $("end").style.display="none";
  $("game").style.display="block";
  $("answer").focus();
 }
@@ -418,9 +842,9 @@ $("restart").addEventListener("click",()=>{
  current=0;
  score=0;
  currentTier="Plankton";
- $("end").style.display="none";
  $("character").style.left="4%";
  $("catLabel").style.left="4%";
+ $("world").classList.remove("traveling");
  showQuestion();
 });
 
