@@ -222,28 +222,117 @@ h1{
 }
 
 /* Bhargavi's movement */
+ function moveBhargavi(){
+ const progress=Math.min(87,4+(score*0.10));
+
+ const ship=$("character");
+
+ ship.style.left=progress+"%";
+ $("catLabel").style.left=progress+"%";
+
+ // Trigger a little spaceship boost
+ ship.classList.remove("boost");
+
+ setTimeout(()=>{
+  ship.classList.add("boost");
+ },10);
+
+ setTimeout(()=>{
+  ship.classList.remove("boost");
+ },750);
+
+ // Make the background move faster
+ $("world").classList.add("traveling");
+
+ setTimeout(()=>{
+  $("world").classList.remove("traveling");
+ },1200);
+}
+/* Bhargavi's spaceship */
 .character{
  position:absolute;
  z-index:3;
  left:4%;
  top:43%;
- width:clamp(85px,12vw,135px);
- height:clamp(85px,12vw,135px);
+ width:clamp(140px,17vw,190px);
+ height:clamp(105px,13vw,145px);
  display:flex;
  align-items:center;
  justify-content:center;
  transform:translateX(-50%);
- transition:left 1.1s cubic-bezier(.2,.8,.2,1);
+ transition:left 1s cubic-bezier(.2,.8,.2,1);
  animation:bob 1.8s ease-in-out infinite;
 }
-.character img{
- width:100%;
- height:100%;
- object-fit:contain;
- filter:drop-shadow(4px 5px 5px #0009);
+
+/* Spaceship body */
+.character::before{
+ content:"";
+ position:absolute;
+ z-index:0;
+ left:12%;
+ top:23%;
+ width:80%;
+ height:60%;
+ background:linear-gradient(
+  180deg,
+  #fff2a6,
+  #ff9cce 35%,
+  #a76aff 75%,
+  #5145a8
+ );
+ clip-path:polygon(0 30%,70% 0,100% 50%,70% 100%,0 70%,12% 50%);
+ filter:drop-shadow(0 0 12px #ff83c4);
 }
+
+/* Rainbow spaceship engine */
+.character::after{
+ content:"";
+ position:absolute;
+ z-index:-1;
+ left:-8%;
+ top:42%;
+ width:35%;
+ height:22%;
+ background:linear-gradient(
+  90deg,
+  transparent,
+  #ff425e,
+  #ffe65a,
+  #50e56b,
+  #43c9ff
+ );
+ clip-path:polygon(100% 0,100% 100%,0 50%);
+ animation:engineFlicker .15s infinite alternate;
+}
+
+.character img{
+ position:relative;
+ z-index:2;
+ width:55%;
+ height:75%;
+ object-fit:contain;
+ filter:drop-shadow(2px 3px 4px #0009);
+}
+
 @keyframes bob{
- 50%{translate:0 -12px}
+ 50%{translate:0 -9px}
+}
+
+@keyframes engineFlicker{
+ from{opacity:.6;transform:scaleX(.8)}
+ to{opacity:1;transform:scaleX(1.2)}
+}
+
+/* Boost when she earns points */
+.character.boost{
+ animation:boost .7s ease-out;
+}
+
+@keyframes boost{
+ 0%{translate:0 0}
+ 35%{translate:20px -30px}
+ 70%{translate:35px -5px}
+ 100%{translate:0 0}
 }
 .cat-label{
  position:absolute;
