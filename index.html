@@ -9,7 +9,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
 *{box-sizing:border-box}
-:root{--travel:0px}
 body{
  margin:0;
  min-height:100vh;
@@ -74,6 +73,7 @@ button,input{font-family:inherit}
  border-radius:50%;
  box-shadow:inset -12px -8px 0 #0005,0 0 24px #a76cff;
  z-index:-1;
+ transition:translate 1.1s cubic-bezier(.2,.8,.2,1);
 }
 .planet.one{
  width:75px;height:75px;right:13%;top:20%;
@@ -407,11 +407,12 @@ button:disabled{opacity:.5;cursor:default}
 .s4{top:18%;left:8%;animation-delay:.3s}
 .s5{top:70%;left:45%;animation-delay:1.3s}
 
-/* Movement feedback */
-.game-world.traveling .space{animation-duration:5s}
-.game-world.traveling .planet{animation:planetDrift 3s ease-in-out infinite alternate}
-@keyframes planetDrift{
- to{translate:-35px 12px}
+/* Space speeds up when Bhargavi moves */
+.game-world.traveling .space{
+ animation-duration:3s;
+}
+.game-world.traveling .nebula{
+ animation-duration:4s;
 }
 
 @media(max-width:650px){
@@ -736,10 +737,15 @@ function normalise(text){
 function checkAnswer(question,submitted){
  const guess=normalise(submitted);
  if(!guess)return null;
+
  for(const [answer,points] of Object.entries(question.answers)){
   const accepted=normalise(answer);
-  if(guess===accepted||guess===accepted+"s"||
-     guess===accepted+"es"||accepted===guess+"s"){
+  if(
+   guess===accepted||
+   guess===accepted+"s"||
+   guess===accepted+"es"||
+   accepted===guess+"s"
+  ){
    return points;
   }
  }
@@ -756,23 +762,50 @@ function updateTierList(tier){
  });
 }
 
+/* Bhargavi moves farther with every accepted answer.
+   The square-root curve makes early movement obvious,
+   while still allowing her to travel across the screen. */
 function moveBhargavi(){
- const progress=Math.min(87,4+(score/(QUESTIONS.length*100))*83);
+ const maxScore=QUESTIONS.length*100;
+ const progress=4+(82*Math.sqrt(Math.min(score,maxScore)/maxScore));
+
  $("character").style.left=progress+"%";
  $("catLabel").style.left=progress+"%";
+
+ /* Move each planet at a different speed.
+    The CSS translate property keeps this separate
+    from the planets' normal styling. */
+ const drift=score*0.6;
+ document.querySelectorAll(".planet").forEach((planet,index)=>{
+  const speed=[0.35,0.65,0.9,0.5,0.8][index];
+  const vertical=[8,-12,6,-8,10][index];
+  planet.style.translate=
+   `${-drift*speed}px ${drift*vertical/100}px`;
+ });
+
+ /* Speed up the starfield briefly after each answer. */
+ $("world").classList.remove("traveling");
+ void $("world").offsetWidth;
  $("world").classList.add("traveling");
- setTimeout(()=>$("world").classList.remove("traveling"),1200);
+
+ clearTimeout(window.travelTimer);
+ window.travelTimer=setTimeout(()=>{
+  $("world").classList.remove("traveling");
+ },1600);
 }
 
 function showQuestion(){
  locked=false;
  const item=QUESTIONS[current];
+
  $("round").textContent=current+1;
  $("category").textContent=item.category;
  $("question").textContent=item.q;
  $("score").textContent=score;
  $("rank").textContent=currentTier.toUpperCase();
+
  updateTierList(currentTier);
+
  $("answer").value="";
  $("answer").disabled=false;
  $("submit").disabled=false;
@@ -797,12 +830,14 @@ $("answerForm").addEventListener("submit",event=>{
 
  locked=true;
  score+=points;
+
  const tier=getTier(points);
  currentTier=tier.name;
 
  $("score").textContent=score;
  $("rank").textContent=currentTier.toUpperCase();
  updateTierList(currentTier);
+
  moveBhargavi();
 
  $("answer").disabled=true;
@@ -814,6 +849,7 @@ $("answerForm").addEventListener("submit",event=>{
  $("resultImage").src=tier.image;
  $("resultImage").alt=tier.name+" tier";
  $("resultPoints").textContent="+"+points+" POINTS";
+
  $("nextButton").textContent=
   current===QUESTIONS.length-1?"SEE FINAL SCORE":"NEXT QUESTION";
 });
@@ -833,8 +869,12 @@ function finishGame(){
  $("game").style.display="none";
  $("result").style.display="none";
  $("end").style.display="block";
+
  $("endTitle").textContent=
-  score>=QUESTIONS.length*85?"ONE IN A BILLI-ON!":"COSMIC JOURNEY COMPLETE";
+  score>=QUESTIONS.length*85
+  ?"ONE IN A BILLI-ON!"
+  :"COSMIC JOURNEY COMPLETE";
+
  $("endScore").textContent="BHARGAVI SCORED "+score+" POINTS.";
 }
 
@@ -842,9 +882,17 @@ $("restart").addEventListener("click",()=>{
  current=0;
  score=0;
  currentTier="Plankton";
+
  $("character").style.left="4%";
  $("catLabel").style.left="4%";
+
+ document.querySelectorAll(".planet").forEach(planet=>{
+  planet.style.translate="0px 0px";
+ });
+
  $("world").classList.remove("traveling");
+ clearTimeout(window.travelTimer);
+
  showQuestion();
 });
 
